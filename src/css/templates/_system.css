@@ -9,14 +9,11 @@
 .error-page:before {
   color: #F3F6F9;
   content: attr(data-error);
-  font-family: Lato, sans-serif;
   font-size: 40vw;
   font-weight: bold;
   left: 50%;
   position: absolute;
   top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   width: 100%;
   z-index: -1;
@@ -26,10 +23,6 @@
   .error-page:before {
     font-size: 20rem;
   }
-}
-
-.error-page__heading {
-  margin-bottom: 1rem;
 }
 
 /* System pages */
@@ -55,32 +48,7 @@
   max-width: 100%;
 }
 
-#email-prefs-form .header {
-  background-color: transparent;
-}
-
 /* Search pages */
-
-.hs-search-field__bar {
-  position: relative;
-}
-
-.hs-search-field__suggestions {
-  background-color: #FFF;
-  max-width: 360px;
-  position: absolute;
-  right: 0;
-  top: 100%;
-  width: 100%;
-}
-
-.hs-search-results {
-  margin-top: 1.4rem;
-}
-
-ul.hs-search-results__listing li {
-  margin-bottom: 1.4rem;
-}
 
 .hs-search-results__title {
   color: #494A52;
@@ -98,18 +66,9 @@ ul.hs-search-results__listing li {
   padding-top: 0.7rem;
 }
 
-.hs-search-highlight {
-  font-weight: bold;
-}
-
-.hs-search-results__pagination a {
-  color: #0270E0;
-}
-
 /* Password prompt */
 
 .password-prompt input[type=password] {
-  display: block;
   height: auto !important;
   margin-bottom: 1.4rem;
 }
@@ -121,6 +80,18 @@ ul.hs-search-results__listing li {
 }
 
 .backup-unsubscribe input[type=email] {
+  font-size: 0.875rem !important;
   margin-bottom: 1.4rem;
   padding: 0.7rem !important;
+}
+
+/* Subscription preferences */
+
+#email-prefs-form .item.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#email-prefs-form .item.disabled input:disabled {
+  cursor: not-allowed;
 }

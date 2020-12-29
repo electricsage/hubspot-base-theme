@@ -6,20 +6,27 @@
 -->
 {% extends './layouts/base.html' %}
 
+{% block template_stylesheets %}
+  <link type="text/css" rel="stylesheet" href="{{ get_asset_url('../css/templates/_blog.css') }}">
+{% endblock template_stylesheets %}
+
 {% block body %}
-<main class="body-container-wrapper">
+{# The main-content ID is used for the navigation skipper in the header.html file. More information on the navigation skipper can be found here: https://github.com/HubSpot/cms-theme-boilerplate/wiki/Accessibility #}
+<main id="main-content" class="body-container-wrapper">
   <div class="body-container body-container--blog-index">
 
-    {# Blog author listing #}
-    {% if blog_author %}
-      <div class="blog-header">
-        <div class="blog-header__inner">
+    {# Blog header #}
+    <div class="blog-header">
+      <div class="blog-header__inner">
+
+        {# Blog author listing header #}
+        {% if blog_author %}
           {% if blog_author.avatar %}
-            <div class="blog-header__author-avatar" style="background-image: url('{{ blog_author.avatar }}');"></div>
+            <img class="blog-header__author-avatar" src="{{ blog_author.avatar }}" alt="{{ blog_author.display_name }}" width="200" loading="eager">
           {% endif %}
           <h1 class="blog-header__title">{{ blog_author.display_name }}</h1>
           {% if blog_author.bio %}
-            <h4 class="blog-header__subtitle">{{ blog_author.bio }}</h4>
+            <p class="blog-header__subtitle">{{ blog_author.bio }}</p>
           {% endif %}
           {% if blog_author.has_social_profiles %}
             <div class="blog-header__author-social-links">
@@ -69,33 +76,27 @@
               {% endif %}
             </div>
           {% endif %}
-        </div>
-      </div>
-    {% elif tag %}
-    {# End blog author listing #}
+        {% elif tag %}
+        {# End blog author listing header #}
 
-    {# Blog tag listing #}
-      <div class="blog-header">
-        <div class="blog-header__inner">
+        {# Blog tag listing header #}
           <h1 class="blog-header__title">Posts about {{ page_meta.html_title|split(' | ')|last }}</h1>
-        </div>
-      </div>
-    {% else %}
-    {# End blog tag listing #}
+        {% else %}
+        {# End blog tag listing header #}
 
-    {# Blog header #}
-      <div class="blog-header">
-        <div class="blog-header__inner">
+        {# Blog listing header #}
           <h1 class="blog-header__title">{{ group.public_title }}</h1>
-          <h4 class="blog-header__subtitle">{{ group.description }}</h4>
+          <p class="blog-header__subtitle">{{ group.description }}</p>
           <div class="blog-header__form">
             {% module "blog_subscribe_form" path="@hubspot/blog_subscribe",
               title=""
             %}
           </div>
-        </div>
+        {% endif %}
+        {# End blog listing header #}
+
       </div>
-    {% endif %}
+    </div>
     {# End blog header #}
 
     <div class="content-wrapper">
@@ -107,13 +108,10 @@
         {% for content in contents %}
           {# On the blog listing page, the first post will be featured above older posts #}
           {% if (loop.first && current_page_num == 1 && !topic) %}
-            <article class="blog-index__post blog-index__post--large">
+            <article class="blog-index__post blog-index__post--large" aria-label="Blog post summary: {{ content.name }}">
               {% if content.featured_image and group.use_featured_image_in_summary %}
-                <a class="blog-index__post-image blog-index__post-image--large"
-                  {% if content.featured_image %}
-                    style="background-image: url('{{ content.featured_image }}');"
-                  {% endif %}
-                  href="{{ content.absolute_url }}">
+                <a class="blog-index__post-image-wrapper blog-index__post-image-wrapper--large" href="{{ content.absolute_url }}" aria-label="{% if content.featured_image_alt_text %}Featured image: {{ content.featured_image_alt_text }} - {% endif %}Read full post: {{ content.name }}">
+                  <img class="blog-index__post-image" src="{{ content.featured_image }}" width="596" alt="{{ content.featured_image_alt_text }}">
                 </a>
               {% endif %}
               <div class="blog-index__post-content  blog-index__post-content--large{% if !content.featured_image or !group.use_featured_image_in_summary %} blog-index__post-content--full-width{% endif %}">
@@ -124,9 +122,10 @@
               </div>
             </article>
           {% else %}
-            <article class="blog-index__post blog-index__post--small">
+            <article class="blog-index__post blog-index__post--small" aria-label="Blog post summary: {{ content.name }}">
               {% if content.featured_image and group.use_featured_image_in_summary %}
-                <a class="blog-index__post-image blog-index__post-image--small" style="background-image: url('{{ content.featured_image }}');" href="{{ content.absolute_url }}">
+                <a href="{{ content.absolute_url }}" aria-label="{% if content.featured_image_alt_text %}Featured image: {{ content.featured_image_alt_text }} - {% endif %}Read full post: {{ content.name }}">
+                  <img class="blog-index__post-image" src="{{ content.featured_image }}" width="365" loading="lazy" alt="{{ content.featured_image_alt_text }}">
                 </a>
               {% endif %}
               <div class="blog-index__post-content  blog-index__post-content--small">
@@ -145,7 +144,7 @@
 
       {# Blog pagination #}
       {% if contents.total_page_count > 1 %}
-        <div class="blog-pagination">
+        <nav aria-label="Pagination" role="navigation" class="blog-pagination">
           {% set page_list = [-2, -1, 0, 1, 2] %}
           {% if contents.total_page_count - current_page_num == 1 %}{% set offset = -1 %}
           {% elif contents.total_page_count - current_page_num == 0 %}{% set offset = -2 %}
@@ -166,7 +165,7 @@
           {% for page in page_list %}
             {% set this_page = current_page_num + page + offset %}
             {% if this_page > 0 and this_page <= contents.total_page_count %}
-              <a class="blog-pagination__link blog-pagination__number-link {{ 'blog-pagination__link--active' if this_page == current_page_num }}" href="{% if this_page == 1 %}{{ group.absolute_url }}{% else %}{{ blog_page_link(this_page) }}{% endif %}">{{ this_page }}</a>
+              <a class="blog-pagination__link blog-pagination__number-link {{ 'blog-pagination__link--active' if this_page == current_page_num }}" aria-label="Go to Page {{ this_page }}" {{ 'aria-current="true"' if this_page == current_page_num }} href="{% if this_page == 1 %}{{ group.absolute_url }}{% else %}{{ blog_page_link(this_page) }}{% endif %}">{{ this_page }}</a>
             {% endif %}
           {% endfor %}
           <a class="blog-pagination__link blog-pagination__next-link {{ 'blog-pagination__next-link--disabled' if !next_page_num }}"{% if next_page_num %} href="{{ blog_page_link(current_page_num + 1) }}"{% endif %}>
@@ -179,7 +178,7 @@
               width='13'
             %}
           </a>
-        </div>
+        </nav>
       {% endif %}
       {# End blog pagination #}
 

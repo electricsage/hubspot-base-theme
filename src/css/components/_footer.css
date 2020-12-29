@@ -1,9 +1,8 @@
 .footer {
-  background-color: #F8FAFC;
   text-align: center;
 }
 
-.footer__container.content-wrapper {
+.footer__container {
   padding: 1rem 0;
 }
 
