@@ -52,7 +52,7 @@ The style guide for the HubSpot CMS boilerplate. Please use this style guide as 
     </section>
 
     <footer>
-      <a href="/blog-post-title">Read More</a> 
+      <a href="/blog-post-title">Read More</a>
     </footer>
   </article>
 <section>
@@ -72,7 +72,7 @@ The style guide for the HubSpot CMS boilerplate. Please use this style guide as 
     </div>
 
     <div class="post-footer">
-      <a href="/blog-post-title">Read More</a> 
+      <a href="/blog-post-title">Read More</a>
     </div>
   </div>
 </div>
@@ -167,7 +167,7 @@ The style guide for the HubSpot CMS boilerplate. Please use this style guide as 
 **Bad example:**<br>
 `{{ variable | filter }}`<br>
 
-3. Use single quotation marks for HubL.
+3. Double quotation marks are preferred for HubL, though single quotation marks may be used when necessary.
 4. Variable and macro names should clearly indicate their purpose.
 5. When coding rgba values from a HubSpot color field the opacity field should be divided by `100` to represent the appropriate value.<br>
 **Example:**<br>
@@ -175,7 +175,7 @@ The style guide for the HubSpot CMS boilerplate. Please use this style guide as 
 
 6. Variables that require a unit value should include that concatenation inside of the HubL brackets.<br>
 **Example:**<br>
-`{{ path.to.a.field ~ 'px' }}`
+`{{ path.to.a.field ~ "px" }}`
 
 ---
 
@@ -588,7 +588,7 @@ The `theme.json` file should be structured like the code below. The file should 
 
 ```
 {
-  "label": "Theme Name",
+  "label": "Theme name",
   "preview_path": "./templates/home.html",
   "screenshot_path": "./images/template-previews/theme-name.png"
 }
